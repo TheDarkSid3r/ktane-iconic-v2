@@ -44,7 +44,7 @@ public sealed class IconicModule : MonoBehaviour
     private Texture2D _emptyIcon;
 
     [SerializeField]
-    private Texture2D _baln;
+    private Texture2D _blan;
 
     private static int _moduleIdCounter = 0;
     private static readonly string[] _coordinateLetters = new[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "AB", "AC", "AD", "AE", "AF" };
@@ -160,7 +160,7 @@ public sealed class IconicModule : MonoBehaviour
         else
         {
             _displayText.text = _isSolved ? "GG!" : "Iconic";
-            _iconImage.texture = _isSolved ? _baln : _emptyIcon;
+            _iconImage.texture = _isSolved ? _blan : _emptyIcon;
             _iconImage.uvRect = new Rect(0, 0, 1, 1);
         }
 
