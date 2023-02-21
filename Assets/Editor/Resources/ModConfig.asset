@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 615501dbe4f3fe94fbf4b564abb10237, type: 3}
+  m_Name: ModConfig
+  m_EditorClassIdentifier: 
+  id: iconic
+  title: Iconic
+  author: Blananas2, TheDarkSid3r
+  description: 'Hey, you ever seen these pixelated images on this website about defusing
+    bombs? Yeah me neither.
+
+
+    IMPORTANT NOTE: This module requires extremely specific support for every module
+    and as such not all modules will be compatible. To figure out which modules are
+    supported, refer to the GitHub or the most recent update of this module.
+
+
+    Module ID: iconic
+
+
+    The manual can be found here: https://ktane.timwi.de/HTML/Iconic.html'
+  version: 2.0
+  outputFolder: build
+  previewImage: {fileID: 2800000, guid: d00feeba6d281b7419d79f9cc9164cf9, type: 3}
