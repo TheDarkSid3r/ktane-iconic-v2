@@ -38,9 +38,6 @@ public sealed class IconicModule : MonoBehaviour
     private RawImage _iconImage;
 
     [SerializeField]
-    private Text _blankText;
-
-    [SerializeField]
     private Texture2D _emptyIcon;
 
     [SerializeField]
@@ -72,7 +69,9 @@ public sealed class IconicModule : MonoBehaviour
     {
         get
         {
-            return _bombInfo.GetSolvableModuleNames().Where(_ignoreList.Contains).ToArray();
+            List<string> ignoredMods = new List<string>(_bombInfo.GetSolvableModuleNames().Where(_ignoreList.Contains));
+            ignoredMods.Remove(_module.ModuleDisplayName); // remove one instance of Iconic (essentially ignoring this instance)
+            return ignoredMods.ToArray();
         }
     }
 
@@ -96,7 +95,6 @@ public sealed class IconicModule : MonoBehaviour
 
     private void Start()
     {
-        _blankText.enabled = false;
         UpdateDisplay();
         _ignoreList = _boss.GetIgnoredModules("Iconic", new[] { "+", "14", "A>N<D", "Black Arrows", "Brainf---", "Busy Beaver", "Cube Synchronization", "Don't Touch Anything", "Floor Lights", "Forget Everything", "Forget Any Color", "Forget Enigma", "Forget It Not", "Forget Maze Not", "Forget Infinity", "Forget Me Later", "Forget Me Not", "Forget Perspective", "Forget The Colors", "Forget Them All", "Forget This", "Forget Us Not", "Gemory", "Iconic", "Keypad Directionality", "Kugelblitz", "OmegaForget", "Organization", "Out of Time", "Purgatory", "RPS Judging", "Security Council", "Shoddy Chess", "Simon Forgets", "Simon's Stages", "Soulscream", "Souvenir", "Tallordered Keys", "Tetrahedron", "The Board Walk", "The Twin", "The Very Annoying Button", "Ultimate Custom Night", "Whiteout", "Übermodule", "Bamboozling Time Keeper", "Doomsday Button", "OmegaDestroyer", "Password Destroyer", "The Time Keeper", "Timing is Everything", "Turn The Key", "Zener Cards" });
         _module.OnActivate += OnActivate;
@@ -208,8 +206,6 @@ public sealed class IconicModule : MonoBehaviour
         IconData icon = IconicData.Instance.GetIcon(next);
         if (icon == null)
         {
-            _blankText.enabled = true;
-            _blankText.text = next;
             icon = IconicData.Instance.GetIcon("Blank");
             if (icon == null)
             {
@@ -250,24 +246,16 @@ public sealed class IconicModule : MonoBehaviour
 
         _currentIcon = null;
         _currentPart = null;
-        _blankText.enabled = false;
         UpdateDisplay();
 
         if (_queue.Count < 1)
         {
             if (!_isSolved && NonIgnoredSolves.Length >= NonIgnoredBombModules.Length)
             {
-                if (!_hasAddedIgnoredModules)
+                if (!_hasAddedIgnoredModules && IgnoredBombModules.Length > 0)
                 {
-                    bool hasSkippedIconic = false;
                     foreach (string name in IgnoredBombModules)
-                    {
-                        if (name == _module.ModuleDisplayName && !hasSkippedIconic)
-                            hasSkippedIconic = true;
-
-                        else
-                            Enqueue(name);
-                    }
+                        Enqueue(name);
 
                     _hasAddedIgnoredModules = true;
                     return;
