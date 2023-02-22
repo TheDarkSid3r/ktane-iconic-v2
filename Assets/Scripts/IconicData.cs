@@ -82,6 +82,12 @@ public sealed class IconicData : MonoBehaviour
         }
     }
 
+    private string FormatTimestamp(double timestamp)
+    {
+        DateTime dateTime = _origin.AddMilliseconds(timestamp).ToLocalTime();
+        return string.Format("built on {0} at {1} local time", dateTime.ToString("MMM dd, yyyy"), dateTime.ToString("T"));
+    }
+
     private void LoadData(string data, Texture2D sprite, bool remote)
     {
         string[] parts = data.Split('#');
@@ -90,7 +96,7 @@ public sealed class IconicData : MonoBehaviour
         {
             if (timestamp <= _localTimestamp)
             {
-                Log("Loaded remote data but bundled data is up to date or newer");
+                Log("Loaded remote data ({0}) but bundled data is up to date or newer", FormatTimestamp(timestamp));
                 return;
             }
         }
@@ -99,8 +105,6 @@ public sealed class IconicData : MonoBehaviour
             _localTimestamp = timestamp;
         }
 
-        DateTime dateTime = _origin.AddMilliseconds(timestamp).ToLocalTime();
-
         string[] dict = parts[2].Replace("{{HASH}}", "#").Split('^').Select(t => t.Replace("{{CARET}}", "^")).ToArray();
         IconData[] icons = parts[1].Split('^').Select(d => new IconData(d, dict)).ToArray();
 
@@ -108,6 +112,6 @@ public sealed class IconicData : MonoBehaviour
         IconSprite = sprite;
         IconSprite.filterMode = FilterMode.Point;
 
-        Log((remote ? "Replaced bundled data with remote data" : "Loaded bundled data") + " ({0} icons, built on {1} at {2} local time)", Icons.Length, dateTime.ToString("MMM dd, yyyy"), dateTime.ToString("T"));
+        Log((remote ? "Replaced bundled data with remote data" : "Loaded bundled data") + " ({0} icons, {1})", Icons.Length, FormatTimestamp(timestamp));
     }
 }
